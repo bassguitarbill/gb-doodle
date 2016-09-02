@@ -1,0 +1,54 @@
+.color-0 {
+	background-color: #0f380f;
+}
+.color-1 {
+	background-color: #306230;
+}
+.color-2 {
+	background-color: #8bac0f;
+}
+.color-3 {
+	background-color: #9bbc0f;
+}
+
+.swatch {
+	display: block;
+	height: 30px;
+	width: 30px;
+	border: 2px solid black;
+	margin: 5px;
+}
+
+.swatch.selected {
+	border: 2px solid yellow;
+}
+
+.palette {
+	display: inline-block;
+}
+
+.pixel {
+	display:inline-block;
+	height: 40px;
+	width: 40px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.pixel-row {
+	display: block;
+}
+
+.grey {
+	background-color: #777;
+}
+
+.white {
+	background-color: #FFF;
+}
+
+#canvas {
+	border: 2px solid black;
+	width: 320px;
+	display: inline-block;
+}
