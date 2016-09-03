@@ -15,9 +15,9 @@ function initializeCanvas() {
 	var row = canvas.append("<div class='pixel-row'></div>")
 		for(var j=0; j<HEIGHT; j++) {
 			if((i+j) % 2){
-				row.append("<div class='pixel grey'></div>")
+				row.append("<div class='pixel color-2'></div>")
 			} else {
-				row.append("<div class='pixel white'></div>")
+				row.append("<div class='pixel color-3'></div>")
 			}
 		}
 	}
@@ -30,14 +30,20 @@ function initializeListeners() {
 		tgt.addClass("selected");
 		selectedSwatch = /color-\d+/.exec($(tgt).attr("class"))[0];
 	});
-	$(".pixel").click(event => {
-		var tgt = $(event.target);
-		console.log(tgt);
-		if(selectedSwatch){
-			$.each(["0","1","2","3"], num => tgt.removeClass("color-" + num));
-			tgt.removeClass("white");
-			tgt.removeClass("grey");
-			tgt.addClass(selectedSwatch);
-		}
-	});
+	$(".pixel").mouseover(event => {
+                if(event.which == 1){
+        	    var tgt = $(event.target);
+        	    if(selectedSwatch){
+        		$.each(["0","1","2","3"], num => tgt.removeClass("color-" + num));
+                        tgt.addClass(selectedSwatch);
+        	    }
+                }
+	});;
+	$(".pixel").mousedown(event => {
+            var tgt = $(event.target);
+            if(selectedSwatch){
+                $.each(["0","1","2","3"], num => tgt.removeClass("color-" + num));
+                tgt.addClass(selectedSwatch);
+            }
+	})
 }

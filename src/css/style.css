@@ -39,16 +39,29 @@
 	display: block;
 }
 
-.grey {
-	background-color: #777;
-}
-
-.white {
-	background-color: #FFF;
-}
-
 #canvas {
 	border: 2px solid black;
 	width: 320px;
 	display: inline-block;
+}
+
+.canvas-and-palette,.vert-divider {
+    display: inline-block;
+}
+
+.vert-divider{
+    border: 2px solid black;
+    height: 320px;
+}
+
+.tile-library {
+    display: inline-flex;
+    flex-direction: row;
+}
+
+.library-tile {
+    flex: 64px;
+    height: 64px;
+    width: 64px;
+    margin: 8px;
 }
