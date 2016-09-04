@@ -15,9 +15,9 @@ function initializeCanvas() {
 	var row = canvas.append("<div class='pixel-row'></div>")
 		for(var j=0; j<HEIGHT; j++) {
 			if((i+j) % 2){
-				row.append("<div class='pixel color-2'></div>")
+				row.append("<div class='pixel color-1'></div>")
 			} else {
-				row.append("<div class='pixel color-3'></div>")
+				row.append("<div class='pixel color-0'></div>")
 			}
 		}
 	}
@@ -28,7 +28,7 @@ function initializeListeners() {
 		$(".swatch").removeClass("selected");
 		var tgt = $(event.target);
 		tgt.addClass("selected");
-		selectedSwatch = /color-\d+/.exec($(tgt).attr("class"))[0];
+                selectedSwatch = getColorOfPixel(tgt);
 	});
 	$(".pixel").mouseover(event => {
                 if(event.which == 1){
@@ -46,4 +46,34 @@ function initializeListeners() {
                 tgt.addClass(selectedSwatch);
             }
 	})
+}
+
+function getCurrentCanvasDrawing() {
+    var colorArray = $(".pixel")
+        .map((i,p) => getColorOfPixel(p))
+        .map((i,c) => Number(c.split("-")[1]));
+    var byteArray = [];
+    while(colorArray.length){
+        byteArray.push(colorArray.splice(0,8));
+    }
+    byteArray = byteArray
+        .map(b => b
+                .map(pix => {return {up: Math.floor(pix/2), down: pix%2}})
+                .reduce((prev, curr, i, arr) => {
+                    var bit = 3-(i%4);
+                    if(bit == 3)
+                        prev.push({high:0, low:0})
+                    prev[prev.length - 1].high += (curr.up << bit);
+                    prev[prev.length - 1].low += (curr.down << bit);
+                    return prev;
+                },[])
+            )
+        .map(b => "$" + b[0].high.toString(16) + b[1].high.toString(16) + ", $" + b[0].low.toString(16) + b[1].low.toString(16) + ", ")
+        .join("")
+        .slice(0,-2)
+    return byteArray;
+}
+
+function getColorOfPixel(pix) {
+    return /color-\d+/.exec($(pix).attr("class"))[0];
 }

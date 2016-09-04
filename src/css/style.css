@@ -1,13 +1,13 @@
-.color-0 {
+.color-3 {
 	background-color: #0f380f;
 }
-.color-1 {
+.color-2 {
 	background-color: #306230;
 }
-.color-2 {
+.color-1 {
 	background-color: #8bac0f;
 }
-.color-3 {
+.color-0 {
 	background-color: #9bbc0f;
 }
 
@@ -63,5 +63,6 @@
     flex: 64px;
     height: 64px;
     width: 64px;
-    margin: 8px;
+    margin: 6px;
+    border: 1px solid black;
 }
