@@ -6,21 +6,33 @@ $(() => {
 const WIDTH = 8;
 const HEIGHT = 8;
 
-var selectedSwatch;
+const COLOR_MAP = {
+    3: "#0f380f",
+    2: "#306230",
+    1: "#8bac0f",
+    0: "#9bbc0f"
+}
 
+var selectedSwatch;
+var pixelArray = new Array(WIDTH * HEIGHT);
+
+var hscale = ctx => ctx.canvas.width / WIDTH;
+var vscale = ctx => ctx.canvas.height / HEIGHT;
 
 function initializeCanvas() {
-    var canvas = $("#canvas");
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
     for(var i=0; i<WIDTH; i++){
-        var row = canvas.append("<div class='pixel-row'></div>")
-            for(var j=0; j<HEIGHT; j++) {
-                if((i+j) % 2){
-                    row.append("<div class='pixel color-1'></div>")
-                } else {
-                    row.append("<div class='pixel color-0'></div>")
-                }
-            }
+        for(var j=0; j<HEIGHT; j++){
+            colorPixel(ctx, i, j, ((i+j)%2) ? "1" : "0")
+        }
     }
+}
+
+function colorPixel(ctx, width, height, color) {
+    ctx.fillStyle = COLOR_MAP[color];
+    ctx.fillRect(width*hscale(ctx), height*vscale(ctx), hscale(ctx), vscale(ctx));
+    pixelArray[width + (height*HEIGHT)] = color;
 }
 
 function initializeListeners() {
@@ -30,28 +42,21 @@ function initializeListeners() {
         tgt.addClass("selected");
         selectedSwatch = getColorOfPixel(tgt);
     });
-    $(".pixel").mouseover(event => {
+
+    var ctx = document.getElementById("canvas").getContext("2d");
+    $("#canvas").mousemove(event => {
         if(event.which == 1){
-            var tgt = $(event.target);
-            if(selectedSwatch){
-                $.each(["0","1","2","3"], num => tgt.removeClass("color-" + num));
-                tgt.addClass(selectedSwatch);
-            }
+            var x = Math.floor(event.offsetX/hscale(ctx));
+            var y = Math.floor(event.offsetY/vscale(ctx));
+            colorPixel(ctx, x, y, selectedSwatch);
+            console.log(x,y);
         }
-    });;
-    $(".pixel").mousedown(event => {
-        var tgt = $(event.target);
-        if(selectedSwatch){
-            $.each(["0","1","2","3"], num => tgt.removeClass("color-" + num));
-            tgt.addClass(selectedSwatch);
-        }
-    })
+    });
+
 }
 
 function getCurrentCanvasDrawing() {
-    var colorArray = $(".pixel")
-        .map((i,p) => getColorOfPixel(p))
-        .map((i,c) => Number(c.split("-")[1]));
+    var colorArray = pixelArray.slice();
     var byteArray = [];
     while(colorArray.length){
         byteArray.push(colorArray.splice(0,8));
@@ -75,5 +80,5 @@ function getCurrentCanvasDrawing() {
 }
 
 function getColorOfPixel(pix) {
-    return /color-\d+/.exec($(pix).attr("class"))[0];
+    return /color-\d+/.exec($(pix).attr("class"))[0].split("-")[1];
 }

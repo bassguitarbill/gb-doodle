@@ -27,18 +27,6 @@
     display: inline-block;
 }
 
-.pixel {
-    display:inline-block;
-    height: 40px;
-    width: 40px;
-    margin: 0px;
-    padding: 0px;
-}
-
-.pixel-row {
-    display: block;
-}
-
 #canvas {
     border: 2px solid black;
     width: 320px;
