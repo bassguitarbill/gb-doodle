@@ -1,48 +1,48 @@
 .color-3 {
-	background-color: #0f380f;
+    background-color: #0f380f;
 }
 .color-2 {
-	background-color: #306230;
+    background-color: #306230;
 }
 .color-1 {
-	background-color: #8bac0f;
+    background-color: #8bac0f;
 }
 .color-0 {
-	background-color: #9bbc0f;
+    background-color: #9bbc0f;
 }
 
 .swatch {
-	display: block;
-	height: 30px;
-	width: 30px;
-	border: 2px solid black;
-	margin: 5px;
+    display: block;
+    height: 30px;
+    width: 30px;
+    border: 2px solid black;
+    margin: 5px;
 }
 
 .swatch.selected {
-	border: 2px solid yellow;
+    border: 2px solid yellow;
 }
 
 .palette {
-	display: inline-block;
+    display: inline-block;
 }
 
 .pixel {
-	display:inline-block;
-	height: 40px;
-	width: 40px;
-	margin: 0px;
-	padding: 0px;
+    display:inline-block;
+    height: 40px;
+    width: 40px;
+    margin: 0px;
+    padding: 0px;
 }
 
 .pixel-row {
-	display: block;
+    display: block;
 }
 
 #canvas {
-	border: 2px solid black;
-	width: 320px;
-	display: inline-block;
+    border: 2px solid black;
+    width: 320px;
+    display: inline-block;
 }
 
 .canvas-and-palette,.vert-divider {
