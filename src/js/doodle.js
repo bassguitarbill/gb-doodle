@@ -81,3 +81,9 @@ function getCurrentCanvasDrawing() {
 function getColorOfPixel(pix) {
     return /color-\d+/.exec($(pix).attr("class"))[0].split("-")[1];
 }
+
+function addLibraryTile() {
+    blobUtil.canvasToBlob(document.getElementById("canvas"))
+        .then(blobUtil.blobToBase64String)
+        .then(str => $(".tile-library").append("<img class='library-tile' src='data:image/png;base64," + str + "' />"))
+}

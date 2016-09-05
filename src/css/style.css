@@ -53,4 +53,9 @@
     width: 64px;
     margin: 6px;
     border: 1px solid black;
+    display: inline-block;
+}
+
+img {
+    image-rendering: pixelated;
 }
