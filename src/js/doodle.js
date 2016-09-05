@@ -49,7 +49,6 @@ function initializeListeners() {
             var x = Math.floor(event.offsetX/hscale(ctx));
             var y = Math.floor(event.offsetY/vscale(ctx));
             colorPixel(ctx, x, y, selectedSwatch);
-            console.log(x,y);
         }
     });
 
