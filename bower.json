@@ -1,0 +1,27 @@
+{
+  "name": "gb-doodle",
+  "homepage": "https://github.com/bassguitarbill/gb-doodle",
+  "authors": [
+    "Bill Rossi <bassguitarbill@gmail.com>"
+  ],
+  "description": "Gameboy sprite designer",
+  "main": "src/index.html",
+  "keywords": [
+    "gameboy",
+    "sprite",
+    "tile",
+    "art"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "blob-util": "^1.2.1"
+  }
+}
