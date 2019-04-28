@@ -14,6 +14,7 @@ const COLOR_MAP = {
 }
 
 var selectedSwatch;
+var showGridLines = true;
 var pixelArray = new Array(WIDTH * HEIGHT);
 
 var hscale = ctx => ctx.canvas.width / WIDTH;
@@ -51,6 +52,12 @@ function initializeListeners() {
             colorPixel(ctx, x, y, selectedSwatch);
         }
     });
+    $("#canvas").click(event => {
+        var x = Math.floor(event.offsetX/hscale(ctx));
+        var y = Math.floor(event.offsetY/vscale(ctx));
+        colorPixel(ctx, x, y, selectedSwatch);
+    });
+	
 
 }
 
