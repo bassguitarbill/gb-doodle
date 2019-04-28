@@ -1,0 +1,24 @@
+{
+  "name": "gb-doodle",
+  "version": "1.0.0",
+  "description": "Webpage to design GB sprites and tiles",
+  "main": "index.js",
+  "dependencies": {
+    "blob-util": "^2.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "run": "http-server src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bassguitarbill/gb-doodle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bassguitarbill/gb-doodle/issues"
+  },
+  "homepage": "https://github.com/bassguitarbill/gb-doodle#readme"
+}
