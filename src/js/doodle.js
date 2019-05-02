@@ -20,6 +20,22 @@ var pixelArray = new Array(WIDTH * HEIGHT);
 var hscale = ctx => ctx.canvas.width / WIDTH;
 var vscale = ctx => ctx.canvas.height / HEIGHT;
 
+function drawPixel(ctx, width, height, color) {
+    ctx.fillStyle = COLOR_MAP[color];
+    ctx.fillRect(width*hscale(ctx), height*vscale(ctx), hscale(ctx), vscale(ctx));
+}
+
+function draw() {
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    for(var i=0; i<WIDTH; i++){
+        for(var j=0; j<HEIGHT; j++){
+		drawPixel(ctx, x, y, pixelArray[x][y])
+	}
+    }
+}
+    
+
 function initializeCanvas() {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
@@ -28,12 +44,6 @@ function initializeCanvas() {
             colorPixel(ctx, i, j, ((i+j)%2) ? "1" : "0")
         }
     }
-}
-
-function colorPixel(ctx, width, height, color) {
-    ctx.fillStyle = COLOR_MAP[color];
-    ctx.fillRect(width*hscale(ctx), height*vscale(ctx), hscale(ctx), vscale(ctx));
-    pixelArray[width + (height*HEIGHT)] = color;
 }
 
 function initializeListeners() {
