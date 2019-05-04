@@ -1,5 +1,6 @@
 $(() => {
-    initializeCanvas();
+    initializePixelArray();
+    draw();
     initializeListeners();
 });
 
@@ -13,9 +14,9 @@ const COLOR_MAP = {
     0: "#9bbc0f"
 }
 
-var selectedSwatch;
+var selectedSwatch = 0;
 var showGridLines = true;
-var pixelArray = new Array(WIDTH * HEIGHT);
+var pixelArray = [];
 
 var hscale = ctx => ctx.canvas.width / WIDTH;
 var vscale = ctx => ctx.canvas.height / HEIGHT;
@@ -28,20 +29,18 @@ function drawPixel(ctx, width, height, color) {
 function draw() {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
-    for(var i=0; i<WIDTH; i++){
-        for(var j=0; j<HEIGHT; j++){
-		drawPixel(ctx, x, y, pixelArray[x][y])
-	}
+    for(var x=0; x<WIDTH; x++){
+        for(var y=0; y<HEIGHT; y++){
+            drawPixel(ctx, x, y, pixelArray[x][y])
+        }
     }
 }
-    
 
-function initializeCanvas() {
-    var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-    for(var i=0; i<WIDTH; i++){
-        for(var j=0; j<HEIGHT; j++){
-            colorPixel(ctx, i, j, ((i+j)%2) ? "1" : "0")
+function initializePixelArray() {
+    for(var i = 0; i < WIDTH; i++) {
+        pixelArray.push([]);
+        for(var j = 0; j < HEIGHT; j++) {
+            pixelArray[i].push((i+j)%2);
         }
     }
 }
@@ -59,44 +58,43 @@ function initializeListeners() {
         if(event.which == 1){
             var x = Math.floor(event.offsetX/hscale(ctx));
             var y = Math.floor(event.offsetY/vscale(ctx));
-            colorPixel(ctx, x, y, selectedSwatch);
+            pixelArray[x][y] = selectedSwatch;
+            draw();
         }
     });
     $("#canvas").click(event => {
         var x = Math.floor(event.offsetX/hscale(ctx));
         var y = Math.floor(event.offsetY/vscale(ctx));
-        colorPixel(ctx, x, y, selectedSwatch);
+        pixelArray[x][y] = selectedSwatch;
+        draw();
     });
-	
+
 
 }
 
 function getCurrentCanvasDrawing() {
-    var colorArray = pixelArray.slice();
-    var byteArray = [];
-    while(colorArray.length){
-        byteArray.push(colorArray.splice(0,8));
-    }
-    byteArray = byteArray
-        .map(b => b
-                .map(pix => {return {up: Math.floor(pix/2), down: pix%2}})
-                .reduce((prev, curr, i, arr) => {
-                    var bit = 3-(i%4);
-                    if(bit == 3)
-                        prev.push({high:0, low:0})
-                            prev[prev.length - 1].high += (curr.up << bit);
-                    prev[prev.length - 1].low += (curr.down << bit);
-                    return prev;
-                },[])
-            )
-        .map(b => "$" + b[0].high.toString(16) + b[1].high.toString(16) + ", $" + b[0].low.toString(16) + b[1].low.toString(16) + ", ")
-        .join("")
-        .slice(0,-2)
-        return byteArray;
+    // We have to flip the pixelArray diagonally
+    // Right now it's a row of columns, and we need the data row-by-row
+    return pixelArray.reduce((acc, cv) => {
+        cv.forEach((v, i) => {
+            !acc[i] ? acc.push([v]) : acc[i].push(v);
+        });
+        return acc;
+    }, []).map(row => {
+        // Each row maps to two bytes
+        // First byte is the LSB of each pixel from L to R
+        // Second byte is the upper bit
+        var lo = 0, hi = 0;
+        row.forEach((p, i) => {
+            lo += p%2 ? (1 << (7-i)) : 0;
+            hi += p>1 ? (1 << (7-i)) : 0;
+        });
+        return new Uint8Array([lo, hi]);
+    });
 }
 
 function getColorOfPixel(pix) {
-    return /color-\d+/.exec($(pix).attr("class"))[0].split("-")[1];
+    return Number(/color-\d+/.exec($(pix).attr("class"))[0].split("-")[1]);
 }
 
 function addLibraryTile() {
