@@ -89,9 +89,26 @@ function getCurrentCanvasDrawing() {
             lo += p%2 ? (1 << (7-i)) : 0;
             hi += p>1 ? (1 << (7-i)) : 0;
         });
-        return new Uint8Array([lo, hi]);
-    });
+        return [lo, hi];
+    }).reduce((acc, cv) => acc.concat(cv), []);
 }
+
+var saveByteArray = (data, name, mimeType) => {
+    var blob = new Blob(data, {type: mimeType});
+    saveAs(blob, name);
+/*
+    var url = window.URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    document.body.appendChild(a);
+    a.style = 'display: none';
+    a.href=url;
+    a.download = name;
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+*/
+    
+};
 
 function getColorOfPixel(pix) {
     return Number(/color-\d+/.exec($(pix).attr("class"))[0].split("-")[1]);

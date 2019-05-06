@@ -4,7 +4,8 @@
   "description": "Webpage to design GB sprites and tiles",
   "main": "index.js",
   "dependencies": {
-    "blob-util": "^2.0.2"
+    "blob-util": "^2.0.2",
+    "file-saver": "^2.0.1"
   },
   "devDependencies": {},
   "scripts": {
